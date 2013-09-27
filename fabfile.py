@@ -18,3 +18,9 @@ def prepare_deploy():
   test()
   commit()
   push()
+
+def deploy():
+  code_dir = '/srv/django/myproject'
+  with cd(code_dir):
+    run("git pull")
+    run("touch app.wsgi")
