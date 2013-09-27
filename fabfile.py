@@ -1,7 +1,12 @@
-from fabric.api import local
+from __future__ import with_statement
+from fabric.api import local, settings, abort
+from fabric.contrib.console import confirm
 
 def test():
-  local("./manage.py test my_app")
+  with settings(warn_only=True):
+    result = local("./manage.py test my_app", capture=True)
+  if result.failed and not confirm("Tests failed, continue anyway?"):
+    abort("Aborting at user request.")
 
 def commit():
   local("git add -p && git commit")
